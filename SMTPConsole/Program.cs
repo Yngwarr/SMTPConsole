@@ -50,7 +50,7 @@ namespace SMTPConsole
             SslStream ssl = new SslStream(stream);
 
             Read(stream);
-            Write(stream, $"EHLO {Dns.GetHostName()}\r\n");
+            Write(stream, "EHLO\r\n");
             Read(stream);
 
             Write(stream, "STARTTLS\r\n");
@@ -58,7 +58,9 @@ namespace SMTPConsole
 
 			ssl.AuthenticateAsClient(server);
 
-			Write(ssl, "AUTH LOGIN\r\n");
+            //Write(ssl, "HELO\r\n");
+            //Read(ssl);
+            Write(ssl, "AUTH LOGIN\r\n");
 			Read(ssl);
 			Write(ssl, $"{Base(user)}\r\n");
 			Read(ssl);
@@ -116,10 +118,10 @@ done:
 			string src, dst, subj, msg = "";
 			string passwd;
 
-            Console.Write("Password (won't be displayed): ");
-            passwd = ReadPasswd();
             Console.Write("From: ");
             src = Console.ReadLine();
+            Console.Write("Password (won't be displayed): ");
+            passwd = ReadPasswd();
             Console.Write("To: ");
             dst = Console.ReadLine();
             Console.Write("Subj: ");
